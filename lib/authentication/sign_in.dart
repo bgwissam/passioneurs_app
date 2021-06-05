@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:passioneurs/shared/drop_down_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart' as appLoc;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final Function changeLang;
+  const LoginPage({Key? key, required this.changeLang}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -9,7 +12,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  late String userName, password;
+  late String userName = '', password = '', _langLocal = 'en';
   double _sizedBoxHeight = 20.0;
   @override
   Widget build(BuildContext context) {
@@ -98,7 +101,9 @@ class _LoginPageState extends State<LoginPage> {
             width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
                 onPressed: () async {
-                  print('The username: $userName and password: $password');
+                  if (_formKey.currentState!.validate()) {
+                    print('The username: $userName and password: $password');
+                  }
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -113,7 +118,37 @@ class _LoginPageState extends State<LoginPage> {
                     return Colors.pink;
                   }),
                 ),
-                child: Text('Submit')),
+                child: Text(appLoc.AppLocalizations.of(context)!.submit)),
+          ),
+          SizedBox(
+            height: _sizedBoxHeight * 3,
+          ),
+          Container(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                isDense: true,
+                isExpanded: true,
+                value: _langLocal,
+                onChanged: (val) {
+                  setState(() {
+                    _langLocal = val.toString();
+                    widget.changeLang(_langLocal);
+                  });
+                },
+                selectedItemBuilder: (BuildContext context) {
+                  return Languages.locale().map<Widget>((e) {
+                    return Center(
+                      child: Text(e),
+                    );
+                  }).toList();
+                },
+                items: Languages.locale().map(
+                  (String e) {
+                    return DropdownMenuItem(child: Text(e), value: e);
+                  },
+                ).toList(),
+              ),
+            ),
           )
         ],
       ),

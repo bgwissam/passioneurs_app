@@ -9,12 +9,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  bool _loggedIn = false;
+  final bool _loggedIn = true;
+  String _local = 'en';
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: Locale('en'),
+      locale: Locale(_local),
       debugShowCheckedModeBanner: false,
       title: 'Passioneurs',
       localizationsDelegates: [
@@ -29,7 +30,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: _loggedIn ? HomeLandingPage() : LoginPage(),
+      home: _loggedIn
+          ? HomeLandingPage()
+          : LoginPage(
+              changeLang: _changeLanguage,
+            ),
     );
+  }
+
+  void _changeLanguage(String lang) {
+    print(lang);
+    _local = lang;
   }
 }

@@ -28,6 +28,7 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
       body: Center(
         child: Container(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(appLoc.AppLocalizations.of(context)!.helloWorld),
               SizedBox(
