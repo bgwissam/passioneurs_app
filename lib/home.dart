@@ -44,7 +44,7 @@ class _HomeLandingPageState extends State<HomeLandingPage> {
 
   //This is just for testing data
   _getWelcomeMessage() async {
-    welcome = await db.fetchWelcome();
+    await db.fetchWelcome();
     setState(() {});
   }
 }
